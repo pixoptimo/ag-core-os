@@ -43,6 +43,16 @@ export const Workspace: React.FC<WorkspaceProps> = ({ className }) => {
   const [signalBars, setSignalBars] = useState<number[]>([4, 4, 3, 5, 4]);
   const terminalEndRef = useRef<HTMLDivElement>(null);
 
+  // Reset logs when module changes
+  useEffect(() => {
+    const handler = (e: Event) => {
+      // Reset to initial logs on module change
+      setLogs(INITIAL_LOGS);
+    };
+    window.addEventListener('module:load', handler);
+    return () => window.removeEventListener('module:load', handler);
+  }, []);
+
   // Auto scroll terminal logs
   useEffect(() => {
     if (terminalEndRef.current) {

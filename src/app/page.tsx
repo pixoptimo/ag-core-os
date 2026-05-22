@@ -1,5 +1,5 @@
-import AppShell from "@/components/templates/AppShell/AppShell";
+import Workspace from "@/components/organisms/workspace/Workspace";
 
 export default function Home() {
-  return <AppShell />;
+  return <Workspace />;
 }

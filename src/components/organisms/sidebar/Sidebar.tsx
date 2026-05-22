@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 import clsx from "clsx";
-import NavItem from "../../molecules/NavItem/NavItem";
-import TelemetryLabel from "../../atoms/labels/TelemetryLabel";
+import NavItem from "@/components/molecules/NavItem/NavItem";
+import TelemetryLabel from "@/components/atoms/labels/TelemetryLabel";
+import { useActiveModule } from "@/context/ActiveModuleContext";
+import { useRouter } from "next/navigation";
 import * as Icons from "lucide-react";
 
 export interface SidebarProps {
@@ -29,10 +31,13 @@ const MODULES: ModuleItem[] = [
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ className, onModuleChange }) => {
-  const [activeModule, setActiveModule] = useState<string>("NEXUS");
+  const { activeModule, setActiveModule } = useActiveModule();
+  const router = useRouter();
 
   const handleModuleClick = (name: string) => {
     setActiveModule(name);
+    // NEXUS is the home page; all others go to /<module>
+    router.push(name === 'NEXUS' ? '/' : `/${name.toLowerCase()}`);
     if (onModuleChange) {
       onModuleChange(name);
     }

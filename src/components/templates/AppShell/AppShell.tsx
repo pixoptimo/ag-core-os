@@ -1,11 +1,14 @@
+"use client";
 import React from "react";
 import clsx from "clsx";
-import Topbar from "../../organisms/topbar/Topbar";
-import Sidebar from "../../organisms/sidebar/Sidebar";
-import Footer from "../../organisms/footer/Footer";
-import Workspace from "../../organisms/workspace/Workspace";
-import TacticalGrid from "../TacticalGrid/TacticalGrid";
-import ScanlineOverlay from "../../effects/ScanlineOverlay/ScanlineOverlay";
+import Topbar from "@/components/organisms/topbar/Topbar";
+import Sidebar from "@/components/organisms/sidebar/Sidebar";
+import Footer from "@/components/organisms/footer/Footer";
+import Workspace from "@/components/organisms/workspace/Workspace";
+import TacticalGrid from "@/components/templates/TacticalGrid/TacticalGrid";
+import useModuleTransition from "@/hooks/useModuleTransition";
+import ScanlineOverlay from "@/components/effects/ScanlineOverlay/ScanlineOverlay";
+import { useActiveModule } from "@/context/ActiveModuleContext";
 
 export interface AppShellProps {
   children?: React.ReactNode;
@@ -13,10 +16,13 @@ export interface AppShellProps {
 }
 
 export const AppShell: React.FC<AppShellProps> = ({ children, className }) => {
+  useModuleTransition();
+  const { activeModule } = useActiveModule();
+
   return (
     <div className={clsx("flex flex-col h-screen w-screen bg-bg-base relative overflow-hidden select-none font-mono", className)}>
       {/* CRT Scanline & flicker visual overlay */}
-      <ScanlineOverlay />
+      <ScanlineOverlay key={activeModule} />
 
       {/* Reusable tactical background sub-pixel grid */}
       <TacticalGrid />
